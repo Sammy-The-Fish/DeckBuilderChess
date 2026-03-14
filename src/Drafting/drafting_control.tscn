@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://dmfqidwx0ry3v"]
+
+[ext_resource type="Script" uid="uid://c4uc6b1umvl10" path="res://src/Drafting/drafting_control.gd" id="1_68mxr"]
+
+[node name="DraftingControl" type="Control" unique_id=1578895908]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1960.0
+offset_bottom = 1080.0
+script = ExtResource("1_68mxr")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1252565885]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CardContainer" type="GridContainer" parent="VBoxContainer" unique_id=1840760853]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=989316458]
+layout_mode = 2
+text = "No Card Selected"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=837997098]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=753333057]
+layout_mode = 2
+text = "Add Selected Card to your deck"
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1058683271]
+layout_mode = 2
+text = "Player X's Turn to pick a card"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
