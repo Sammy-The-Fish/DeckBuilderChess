@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://ddn0kv2fgid8"]
+
+[ext_resource type="Script" uid="uid://devdh74pe7ck" path="res://src/piece.gd" id="1_nxvcn"]
+[ext_resource type="Texture2D" uid="uid://betnnrgvy72yg" path="res://pieces/whiteBishop.png" id="2_7kjw0"]
+
+[node name="piece" type="Node2D" unique_id=1261743938]
+script = ExtResource("1_nxvcn")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1227068009]
+texture = ExtResource("2_7kjw0")

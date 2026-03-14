@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://d0l35r6at2qja"]
+
+[ext_resource type="Script" uid="uid://dljsb32246amh" path="res://src/seletion_indicator.gd" id="1_rro0d"]
+[ext_resource type="Texture2D" uid="uid://cuh165aekwck8" path="res://pieces/whitePawn.png" id="2_8baes"]
+
+[node name="seletionIndicator" type="Control" unique_id=968166752]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rro0d")
+
+[node name="WhitePawn" type="Sprite2D" parent="." unique_id=1725848698]
+texture = ExtResource("2_8baes")
