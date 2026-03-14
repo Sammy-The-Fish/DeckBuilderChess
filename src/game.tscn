@@ -3,7 +3,9 @@
 [ext_resource type="Script" uid="uid://es6cnwlqvyad" path="res://src/game.gd" id="1_7uq6d"]
 [ext_resource type="Script" uid="uid://bovkofbe3oq1h" path="res://src/board.gd" id="2_3msxb"]
 [ext_resource type="Script" uid="uid://di5qqn2xw0qug" path="res://src/details.gd" id="3_kc8ui"]
+[ext_resource type="Script" uid="uid://pmpqr4l8rs1x" path="res://Scripts/card_manager.gd" id="3_pk08u"]
 [ext_resource type="Texture2D" uid="uid://bggg0vbej7r5r" path="res://cards/Jump.png" id="3_xq6wo"]
+[ext_resource type="Script" uid="uid://w5k8edbfsio4" path="res://Scripts/player_hand.gd" id="4_wqvko"]
 
 [node name="game" type="Node2D" unique_id=1017114127]
 script = ExtResource("1_7uq6d")
@@ -20,7 +22,11 @@ offset_right = 640.0
 offset_bottom = 640.0
 color = Color(0.13333334, 1, 1, 0.25882354)
 
-[node name="hand" type="Node2D" parent="." unique_id=1653067702]
+[node name="manager" type="Node2D" parent="." unique_id=1653067702]
+script = ExtResource("3_pk08u")
+
+[node name="player_hand" type="Node2D" parent="manager" unique_id=2079828572]
+script = ExtResource("4_wqvko")
 
 [node name="details" type="Node2D" parent="." unique_id=1348015268]
 position = Vector2(1051, 95)
@@ -58,10 +64,10 @@ offset_right = 611.0
 offset_bottom = 196.0
 
 [node name="testButton" type="Button" parent="." unique_id=121903867]
-offset_left = 153.0
-offset_top = 868.0
-offset_right = 297.0
-offset_bottom = 928.0
+offset_left = 1361.0
+offset_top = 546.0
+offset_right = 1775.0
+offset_bottom = 621.0
 theme_override_font_sizes/font_size = 48
 text = "WE be testin hear"
 
