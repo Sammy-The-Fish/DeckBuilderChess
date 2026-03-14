@@ -13,7 +13,7 @@ func _ready() -> void:
 		var cardID = randi_range(0, cardDatabaseSize - 1)
 		
 		var newCardButton = Button.new()
-		#newCardButton.icon = the picture
+		#newCardButton.icon = the picture for the card
 		#Make the card selected when pressed by updating the selected button index using the pressed signal from this utton also ideally some visual indicator? (depressed etc)
 		buttons.append(newCardButton)
 
@@ -23,4 +23,5 @@ func _process(delta: float) -> void:
 
 
 func _on_button_pressed() -> void:
-	pass # Replace with function body.
+	# add card to database
+	buttons.remove_at(selectedButtonIndex)
