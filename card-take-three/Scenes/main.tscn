@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://pn0vjunvq0bv"]
+
+[ext_resource type="Script" uid="uid://pmpqr4l8rs1x" path="res://Scripts/card_manager.gd" id="1_8gbba"]
+[ext_resource type="Script" uid="uid://cdxk2rxxut5sr" path="res://Scenes/deck.gd" id="3_8gbba"]
+[ext_resource type="Script" uid="uid://w5k8edbfsio4" path="res://Scripts/player_hand.gd" id="3_kry3j"]
+
+[node name="Main" type="Node2D" unique_id=1411729247]
+
+[node name="cardManager" type="Node2D" parent="." unique_id=1283617048]
+script = ExtResource("1_8gbba")
+
+[node name="PlayerHand" type="Node2D" parent="." unique_id=186252843]
+script = ExtResource("3_kry3j")
+
+[node name="Deck" type="Node2D" parent="." unique_id=3351793]
+script = ExtResource("3_8gbba")
