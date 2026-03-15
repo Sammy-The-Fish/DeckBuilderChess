@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://0i60o1483ced"]
 
+[ext_resource type="Texture2D" uid="uid://c0j6cuprl6an8" path="res://cards/Wall1.png" id="1_0seh3"]
 [ext_resource type="FontFile" uid="uid://dci8481svut55" path="res://fonts/Micro5-Regular.ttf" id="1_ecukm"]
-[ext_resource type="Script" uid="uid://eg6jby5as0b2" path="res://Scripts/start_button.gd" id="2_2hmnx"]
+[ext_resource type="Script" path="res://Scripts/start_button.gd" id="2_2hmnx"]
+[ext_resource type="Texture2D" uid="uid://ry5fvbk1c64b" path="res://cards/BigBanner.png" id="2_j1m1s"]
 [ext_resource type="Texture2D" uid="uid://vdjeqwdoyye3" path="res://miscAssets/button.png" id="3_vfidw"]
-[ext_resource type="Script" uid="uid://c82horx6p6k78" path="res://Scripts/quit_button.gd" id="3_w6dbl"]
+[ext_resource type="Script" path="res://Scripts/quit_button.gd" id="3_w6dbl"]
 [ext_resource type="Texture2D" uid="uid://blyuvyi6dgcxx" path="res://miscAssets/buttonHover.png" id="3_xjx1i"]
 [ext_resource type="Texture2D" uid="uid://c2y0c3u7sm6fg" path="res://cards/nudgeFinal.png" id="4_vfidw"]
 [ext_resource type="Texture2D" uid="uid://dd62g2u0acqaj" path="res://cards/Sacrifice.png" id="5_6uiy5"]
@@ -19,6 +21,28 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control" unique_id=1219486709]
+layout_mode = 0
+offset_left = -625.0
+offset_top = -149.0
+offset_right = 375.0
+offset_bottom = 351.0
+scale = Vector2(3, 3)
+mouse_filter = 2
+texture = ExtResource("1_0seh3")
+stretch_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Control" unique_id=2057494345]
+texture_filter = 1
+layout_mode = 0
+offset_left = 545.00006
+offset_top = 58.999996
+offset_right = 625.00006
+offset_bottom = 90.0
+scale = Vector2(10, 10)
+mouse_filter = 2
+texture = ExtResource("2_j1m1s")
 
 [node name="Control" type="Control" parent="Control" unique_id=1233535432]
 layout_mode = 1
