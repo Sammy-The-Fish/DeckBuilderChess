@@ -18,8 +18,8 @@ black_cell_color = Color(0.2159017, 0.21590173, 0.21590167, 1)
 
 [node name="ColorRect" type="ColorRect" parent="board" unique_id=449455509]
 z_index = -1000
-offset_right = 640.0
-offset_bottom = 640.0
+offset_right = 499.0
+offset_bottom = 600.0
 color = Color(0.13333334, 1, 1, 0.25882354)
 
 [node name="manager" type="Node2D" parent="." unique_id=1653067702]
@@ -49,7 +49,7 @@ position = Vector2(42.624954, 190.87491)
 scale = Vector2(0.40899986, 0.40899986)
 texture = ExtResource("3_xq6wo")
 
-[node name="Button" type="Button" parent="details" unique_id=674015739]
+[node name="executeCardButton" type="Button" parent="details" unique_id=674015739]
 offset_left = 310.0
 offset_top = -24.0
 offset_right = 484.0
@@ -57,11 +57,20 @@ offset_bottom = 61.0
 theme_override_font_sizes/font_size = 56
 text = "PLAY!!"
 
+[node name="proceedButton" type="Button" parent="details" unique_id=601983672]
+offset_left = 310.0
+offset_top = 197.0
+offset_right = 607.0
+offset_bottom = 282.0
+theme_override_font_sizes/font_size = 56
+text = "PROCCEED TO CHESS"
+
 [node name="HBoxContainer" type="HBoxContainer" parent="details" unique_id=298058590]
-offset_left = 243.0
-offset_top = 133.0
-offset_right = 611.0
-offset_bottom = 196.0
+layout_direction = 2
+offset_left = 310.0
+offset_top = 90.0
+offset_right = 678.0
+offset_bottom = 153.0
 
 [node name="testButton" type="Button" parent="." unique_id=121903867]
 offset_left = 1361.0
@@ -71,4 +80,7 @@ offset_bottom = 621.0
 theme_override_font_sizes/font_size = 48
 text = "WE be testin hear"
 
+[connection signal="card_selected" from="manager" to="." method="_on_manager_card_selected"]
+[connection signal="pressed" from="details/executeCardButton" to="." method="_on_execute_card_button_pressed"]
+[connection signal="pressed" from="details/proceedButton" to="." method="_on_proceed_button_pressed"]
 [connection signal="pressed" from="testButton" to="." method="_on_test_button_pressed"]

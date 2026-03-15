@@ -24,6 +24,7 @@ Cards="*uid://dgumrd3tm1jad"
 
 window/size/viewport_width=1960
 window/size/viewport_height=1080
+window/size/initial_position_type=3
 window/stretch/mode="canvas_items"
 
 [input]

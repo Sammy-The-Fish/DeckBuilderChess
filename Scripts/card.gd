@@ -1,25 +1,40 @@
 extends Node2D
 
-signal hovered
-signal hoveredOff
+signal clicked(id: Cards.CARDS, this)
 
 var cardPositionInHand
+var id: Cards.CARDS;
+var isClicked: bool = false
+var hovered = false
+@onready var image = $cardImage
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-	get_parent().connectCardSignals(self)
 
+func onClicked():
+	isClicked = true
+	clicked.emit(id, self)
+	
+	
+func unselect():
+	isClicked = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	scale = Vector2(1, 1)
+	if hovered:
+		scale = Vector2(1.1, 1.1)
+		if Input.is_action_just_pressed("clicked"):
+			onClicked()
+		
+	if isClicked:
+		scale = Vector2(1.25, 1.25)
 
 
 func _on_area_2d_mouse_entered() -> void:
-	emit_signal("hovered", self)
+	hovered = true
+	
 
 
 func _on_area_2d_mouse_exited() -> void:
-	emit_signal("hoveredOff", self)
+	hovered = false
+	
