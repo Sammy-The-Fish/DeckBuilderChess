@@ -3,6 +3,13 @@
 [ext_resource type="Script" uid="uid://drrtlbf6u0cap" path="res://src/Drafting/TextureButtonTags.gd" id="1_sii4x"]
 
 [node name="TextureButton" type="TextureButton" unique_id=1975899067]
-offset_right = 40.0
-offset_bottom = 40.0
+layout_direction = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1960.0
+offset_bottom = -1080.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 0
 script = ExtResource("1_sii4x")
