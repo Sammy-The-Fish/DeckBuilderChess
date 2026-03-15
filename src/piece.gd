@@ -2,6 +2,9 @@ extends Node2D
 
 
 @onready var sprite = $Sprite2D
+@onready var shader = preload("res://shaderTest/OutlineShader.gdshader");
+
+
 
 const SPRITE_SIZE = 16
 const CELL_SIZE = Globals.CELL_SIZE
@@ -59,6 +62,14 @@ func update_sprite():
 		var texture = Globals.SPRITE_MAPPING[color][piece_type]
 		sprite.texture = load(texture)
 	
+
+func apply_shader() -> void:
+	var mat = ShaderMaterial.new();
+	mat.shader = shader;
+	material = mat;
+	pass
+
+
 
 
 func move_position(to_move: Vector2):

@@ -22,7 +22,7 @@ enum CARDS {
 # dictionay of CARDS to CardStat objects
 var cardList = {
 	#CARDS.JUMP : CardStats.new(CARDS.JUMP, 2, "Ignore all units when moving this turn, must end in a empty space", "Jump", "res://cards/Jump.png", Globals.TARGETS.FRIENDLY_PIECE, 1),
-	CARDS.ASSASSINATE : CardStats.new(CARDS.ASSASSINATE, -1, "If one of your units could move and kill this piece this turn, instead kill it instantly. X is piece's value", "Assassinate", "res://cards/AssassinateFinal.png", Globals.TARGETS.FRIENDLY_PIECE, 1),
+	CARDS.ASSASSINATE : CardStats.new(CARDS.ASSASSINATE, -1, "If one of your units could move and kill this piece this turn, instead kill it instantly. X is piece's value", "Assassinate", "res://cards/AssassinateFinal.png", Globals.TARGETS.PIECE, 1),
 	CARDS.ELECTROCUTE : CardStats.new(CARDS.ELECTROCUTE, 3, "Choose target tile, at the beginning of your next turn, if a unit is on this tile it is destroyed. This includes your own pieces", "Electrocute", "res://cards/electrocuteFinal.png", Globals.TARGETS.SQUARE, 1),
 	#CARDS.FREEZE : CardStats.new(CARDS.FREEZE, 3, "Choose target enemy piece, until your next turn that piece cannot be moved", "Freeze", "res://cards/Freeze.png", Globals.TARGETS.ENEMY_PIECE, 1),
 	#CARDS.HARDCOREPAWN : CardStats.new(CARDS.HARDCOREPAWN, 2, "Target pawn you control can move and take as if it were a king this turn", "Hardcore Pawn", "res://cards/hardcorepawn.png", Globals.TARGETS.FRIENDLY_PIECE, 1),

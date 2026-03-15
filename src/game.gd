@@ -100,7 +100,7 @@ func manageSelection():
 			if pos == null : return
 			var piece = board.get_piece(pos)
 			if piece == null: return
-			if piece.color != player_color:
+			if piece.color != status:
 				return
 			if selectedPiece.size() == selectedCard.target_quantity:
 				var unselected = selectedPiece.pop_back()
@@ -111,6 +111,7 @@ func manageSelection():
 			
 			for selected in selectedPiece:
 				selected.modulate = Color("#FF0000")
+
 				
 			details.setQuantitySelected(selectedPiece.size())
 		Globals.TARGETS.PIECE:
