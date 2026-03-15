@@ -13,6 +13,9 @@ const Y_OFFSET = Globals.CELL_SIZE /2
 @export var color: Globals.COLORS
 @export var board_position: Vector2
 
+var isFrozen = false
+var isJumped = false
+
 # game states
 var player_color;
 var status;
@@ -214,6 +217,16 @@ func king_threat_pos():
 		if pos != null:
 			positions.append(pos)
 	return positions
+	
+#func jumpMovement():
+	#if (selected_piece = Globals.PIECE_TYPES.ROOK):
+		
+
+	
+	
+	
+	
+	 
 	
 	
 	

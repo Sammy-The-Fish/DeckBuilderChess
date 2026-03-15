@@ -18,8 +18,8 @@ enum TURN_STATES {
 	CHESS
 }
 
-var white_deck = [Cards.CARDS.JUMP, Cards.CARDS.JUMP]
-var black_deck = []
+var white_deck = [Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP]
+var black_deck = [Cards.CARDS.ASSASSINATE, Cards.CARDS.ASSASSINATE, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP]
 
 var white_hand = []
 var black_hand = []
@@ -149,6 +149,8 @@ func init_game():
 	
 	
 func drop_piece():
+	print(">>>>>>>>>>> ", selected_piece.board_position)
+	
 	var to_move = board.get_pos_under_mouse()
 	if valid_move(selected_piece.board_position, to_move):
 		# For valid move:
@@ -169,8 +171,22 @@ func drop_piece():
 
 
 func valid_move(from_pos, to_pos):
+	print(selected_piece)
+	#print("valid move")
+	#return jumpMovement(from_pos,to_pos)
+
+	
+	
 	var board_copy = board.clone()
 	var src_piece = board_copy.get_piece(from_pos)
+	
+	print(from_pos)
+	print(to_pos)
+	
+	#if(selected_piece != null and selected_piece.isJumped):
+		#jumpMovement(from_pos, to_pos)
+	
+	
 	
 	# If we cannot move to threatened or moveable position
 	if(
@@ -285,3 +301,38 @@ func _on_manager_card_selected(id: Cards.CARDS) -> void:
 	selectedCard = Cards.cardList[id]
 	details.setDetails(null)
 	details.setDetails(selectedCard)
+	
+func jumpMovement(from_pos, to_pos):	
+	print("LLOOOOK AT MEEEEEE!!!!<><><><><><><><><><><><><><><><><>")
+
+	#if (selectedCard == null) : return false
+	
+	if selected_piece.piece_type == Globals.PIECE_TYPES.ROOK:
+		if (to_pos.x == selectedPiece[0].x) or (to_pos.y == selectedPiece[0].y) and (board.get_piece(to_pos) == null):
+			return true
+		else:
+			return false
+	elif selected_piece.piece_type == Globals.PIECE_TYPES.QUEEN:
+		print("LLOOOOK AT MEEEEEE!!!!<><><><><><><><><><><><><><><><><>")
+		if (to_pos.x == selectedPiece[0].x) or (to_pos.y == selectedPiece[0].y) or (abs(from_pos.x - to_pos.x) == abs(from_pos.y - to_pos.y)) and (board.get_piece(to_pos) == null):
+			return true
+		else:
+			return false
+	elif selected_piece.piece_type == Globals.PIECE_TYPES.BISHOP:
+		if (abs(from_pos.x - to_pos.x) == abs(from_pos.y - to_pos.y)) and (board.get_piece(to_pos) == null):
+			return true
+		else:
+			return false
+	return false
+	#else:
+		#valid_move(to_pos, from_pos)
+		
+		
+			
+		
+	
+func jump() -> int:
+	selectedPiece.isJumped = true
+	return Cards.cardList[Cards.CARDS.JUMP].manacost
+	
+	
