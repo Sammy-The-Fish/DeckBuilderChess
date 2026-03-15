@@ -135,6 +135,11 @@ text = "9"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="freezingEffect" type="ColorRect" parent="." unique_id=1742088638]
+visible = false
+offset_right = 100.0
+offset_bottom = 100.0
+color = Color(0.11764706, 1, 1, 0.49803922)
 [node name="selector" type="ColorRect" parent="." unique_id=1181800157]
 visible = false
 offset_right = 100.0
