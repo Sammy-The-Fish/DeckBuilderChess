@@ -395,6 +395,8 @@ func _on_manager_card_selected(id: Cards.CARDS) -> void:
 
 var whiteElectricute = false;
 var blackElectricute = false;
+
+
 func upkeep() -> void:
 	if(hardcorePawn != false):
 		board.delete_piece(hardcorePawn)
