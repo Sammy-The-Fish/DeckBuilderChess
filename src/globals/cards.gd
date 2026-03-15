@@ -37,3 +37,4 @@ var cardList = {
 	CARDS.SWAP : CardStats.new(CARDS.SWAP, 5, "Switch any two pieces, however when you play this you cannot play any more cards this turn or make a chess move (End your turn instantly)", "Swap", "res://cards/swap.png", Globals.TARGETS.PIECE, 2),
 	CARDS.TRIP : CardStats.new(CARDS.TRIP, 2, "Target friendly piece can move into one adjacent empty diagonal tile", "Trip", "res://cards/tripFinal.png", Globals.TARGETS.FRIENDLY_PIECE, 1)
 }
+#Spelling mistake in ritual, instanly -> instantly
