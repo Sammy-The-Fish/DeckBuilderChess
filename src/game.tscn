@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://pmpqr4l8rs1x" path="res://Scripts/card_manager.gd" id="3_pk08u"]
 [ext_resource type="Texture2D" uid="uid://bggg0vbej7r5r" path="res://cards/Jump.png" id="3_xq6wo"]
 [ext_resource type="Script" uid="uid://w5k8edbfsio4" path="res://Scripts/player_hand.gd" id="4_wqvko"]
+[ext_resource type="FontFile" uid="uid://dci8481svut55" path="res://fonts/Micro5-Regular.ttf" id="7_cdx1q"]
+[ext_resource type="Texture2D" uid="uid://byq2ngeon4om1" path="res://miscAssets/Energy.png" id="8_4bcji"]
 
 [node name="game" type="Node2D" unique_id=1017114127]
 script = ExtResource("1_7uq6d")
@@ -79,6 +81,65 @@ offset_right = 1775.0
 offset_bottom = 621.0
 theme_override_font_sizes/font_size = 48
 text = "WE be testin hear"
+
+[node name="Mana" type="Control" parent="." unique_id=607588209]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="ColorRect" type="ColorRect" parent="Mana" unique_id=366139420]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0020001
+anchor_top = 0.989
+anchor_right = 1.0020001
+anchor_bottom = 0.989
+offset_left = -243.84021
+offset_top = -288.12
+offset_right = 56.15979
+offset_bottom = 11.880005
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(0.16078432, 1, 1, 1)
+
+[node name="ManaLabel" type="RichTextLabel" parent="Mana/ColorRect" unique_id=21663282]
+layout_mode = 0
+offset_top = 10.0
+offset_right = 195.62263
+offset_bottom = 91.0
+theme_override_fonts/normal_font = ExtResource("7_cdx1q")
+theme_override_font_sizes/normal_font_size = 80
+text = "Mana"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="Mana/ColorRect" unique_id=1521386409]
+position = Vector2(230.99995, 76)
+scale = Vector2(0.88749903, 0.88749903)
+texture = ExtResource("8_4bcji")
+
+[node name="CurrentManaLabel" type="RichTextLabel" parent="Mana/ColorRect" unique_id=236494688]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 147.0
+offset_right = 263.68256
+offset_bottom = 256.0
+theme_override_fonts/normal_font = ExtResource("7_cdx1q")
+theme_override_font_sizes/normal_font_size = 49
+text = "Current Mana:"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Mana/ColorRect" unique_id=105717393]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 188.0
+offset_right = 220.0
+offset_bottom = 291.0
+theme_override_fonts/normal_font = ExtResource("7_cdx1q")
+theme_override_font_sizes/normal_font_size = 102
+text = "9"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="card_selected" from="manager" to="." method="_on_manager_card_selected"]
 [connection signal="pressed" from="details/executeCardButton" to="." method="_on_execute_card_button_pressed"]

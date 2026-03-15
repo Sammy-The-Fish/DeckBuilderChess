@@ -6,6 +6,11 @@ var player_color;
 var status; # who is playing
 var player2_type; # Where AI or Human is playing
 
+var turnCount = 0;
+var currentMana = 0;
+var maxMana = 0
+
+
 const DRAW_AMOUNT = 5
 
 enum TURN_STATES {
@@ -100,14 +105,25 @@ func init_turn():
 	var deck: Array
 	var hand: Array
 	var discard: Array
+	
+
+	
 	if (status == Globals.COLORS.WHITE):
 		deck = white_deck
 		hand = white_hand
 		discard = white_discard
+		turnCount += 1
 	else:
 		deck = black_deck
 		hand = black_hand
 		discard = black_discard
+	
+	if (turnCount < 9):
+		maxMana += 1
+		currentMana = maxMana
+	else:
+		currentMana = 9
+	
 	deck.shuffle()
 	# REPLACE WITH DRAW SIZE LATER
 	for i in range(2):
