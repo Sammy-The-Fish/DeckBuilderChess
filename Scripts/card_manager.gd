@@ -116,6 +116,10 @@ func highlightCard(card, hovered):
 func remove_selected_node():
 	playerHand.remove_selected_node()
 
+
+func clear_hand():
+	playerHand.clear_hand()
+
 func _on_card_clicked(id: Cards.CARDS, card):
 	emit_signal("card_selected", id)
 	playerHand.deselect_all()

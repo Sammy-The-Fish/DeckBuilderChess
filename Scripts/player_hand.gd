@@ -56,3 +56,11 @@ func remove_selected_node():
 			ref.queue_free()
 			break;
 # Called every frame. 'delta' is the elapsed time since the previous frame.s
+
+func clear_hand():
+	print("     as    as    as    as")
+	for i in range(playerHand.size()):
+		var ref = playerHand[i]
+		ref.queue_free()
+	playerHand = []
+		

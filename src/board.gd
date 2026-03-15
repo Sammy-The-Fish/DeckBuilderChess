@@ -179,6 +179,7 @@ func electricute(x, y) -> void:
 	grid[x][y] = true;
 	
 func getElectricute(x, y) -> bool:
+	if grid[x][y] == null : return false
 	return grid[x][y];
 	
 func deElectricute(x, y) -> void:

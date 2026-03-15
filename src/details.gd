@@ -32,6 +32,7 @@ func setDetails(card: CardStats):
 	selectionIndicators = []
 	currentlySelected = 0
 	
+	if card.target_quantity == 0 : button.disabled = false
 	
 	for i in range(card.target_quantity):
 		var indicator = selectionIndicator.instantiate()

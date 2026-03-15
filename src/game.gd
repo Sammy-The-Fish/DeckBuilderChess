@@ -13,6 +13,8 @@ var maxMana = 0
 var storedMana;
 var playerStored
 
+@onready var manaText = $Mana/ColorRect/RichTextLabel
+
 
 const DRAW_AMOUNT = 5
 
@@ -21,7 +23,7 @@ enum TURN_STATES {
 	CHESS
 }
 
-var white_deck = [Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP]
+var white_deck = [Cards.CARDS.ELECTROCUTE, Cards.CARDS.ELECTROCUTE, Cards.CARDS.ELECTROCUTE, Cards.CARDS.ELECTROCUTE, Cards.CARDS.ELECTROCUTE, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP]
 var black_deck = [Cards.CARDS.ASSASSINATE, Cards.CARDS.ASSASSINATE, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP]
 
 var white_hand = []
@@ -63,6 +65,7 @@ func _input(event) :
 	if (turn_state == TURN_STATES.CHESS):
 		if Input.is_action_just_pressed("clicked"):
 			var pos = board.get_pos_under_mouse() 
+			if pos == null : return
 			selected_piece = board.get_piece(pos)
 			
 			if selected_piece == null or selected_piece.color != status:
@@ -126,7 +129,6 @@ func manageSelection():
 				
 			details.setQuantitySelected(selectedPiece.size())
 		Globals.TARGETS.SQUARE:
-			print("we testin")
 			var pos = board.get_pos_under_mouse()
 			if pos == null : return
 			
@@ -134,6 +136,7 @@ func manageSelection():
 				board.position.x + (pos.x * Globals.CELL_SIZE),
 				board.position.y + (pos.y * Globals.CELL_SIZE)
 			)
+			selectedSquare = pos
 			
 			selector.visible = true
 			details.button.disabled = false
@@ -144,27 +147,26 @@ func init_turn():
 	var hand: Array
 	var discard: Array
 	
-
 	
 	if (status == Globals.COLORS.WHITE):
 		deck = white_deck
 		hand = white_hand
 		discard = white_discard
 		turnCount += 1
+		if (turnCount < 9):
+			maxMana += 1
+		else:
+			currentMana = 9
 	else:
 		deck = black_deck
 		hand = black_hand
 		discard = black_discard
 	
-	if (turnCount < 9):
-		maxMana += 1
-		currentMana = maxMana
-	else:
-		currentMana = 9
+	currentMana = maxMana
 	
 	deck.shuffle()
 	# REPLACE WITH DRAW SIZE LATER
-	for i in range(2):
+	for i in range(DRAW_AMOUNT):
 		print("test")
 		hand.push_front(deck.pop_front())
 		if deck.size() == 0:
@@ -174,6 +176,11 @@ func init_turn():
 	
 	for card in hand:
 		manager.addCard(Cards.cardList[card])
+		
+	manaText.text = str(currentMana)
+	
+	upkeep()
+
 	
 
 func init_game():
@@ -335,10 +342,11 @@ func jump() -> int:
 	
 	
 func _on_execute_card_button_pressed() -> void:
+	print(selectedPiece)
 	# massive fuck off switch statement which is yet to be implemented
 	var requiredMana = selectedCard.mana_cost
 	if(selectedCard.mana_cost == -1):
-		match selectedPiece[0].type:
+		match selectedPiece[0].piece_type:
 			Globals.PIECE_TYPES.QUEEN:
 				requiredMana = 9
 			Globals.PIECE_TYPES.ROOK:
@@ -353,19 +361,36 @@ func _on_execute_card_button_pressed() -> void:
 	print(currentMana)
 	print(requiredMana)
 	#if(currentMana >= requiredMana):
-	selectedCard = null
+	#selectedCard = null
 	for piece in selectedPiece:
 		piece.modulate =Color("#FFFFFF")
-	selectedPiece = []
-	potofgreed()
-	manager.remove_selected_node()
+	#potofgreed()
 	
 	
+	print(selectedCard)
+	if(currentMana >= requiredMana):
+		manager.remove_selected_node()
+		match selectedCard.id:
+			Cards.CARDS.POTOGREED:
+				print("here we be")
+				currentMana -= potofgreed()
+			Cards.CARDS.ASSASSINATE:
+				currentMana -= assassinate()
+			Cards.CARDS.ELECTROCUTE:
+				currentMana -= electrocute()
+			Cards.CARDS.SACRIFICE:
+				currentMana -= sacrifice()
+			Cards.CARDS.RITUAL:
+				currentMana -= ritual()
+			Cards.CARDS.HARDCOREPAWN:
+				currentMana -= hardcorePAEWNNNWNWNW()
+		
 	selector.visible = false
 	details.setDetails(null)
 	
+	selectedPiece = []
 	
-	
+	manaText.text = str(currentMana)
 
 
 func _on_proceed_button_pressed() -> void:
@@ -379,6 +404,17 @@ func _on_proceed_button_pressed() -> void:
 		
 	selectedPiece = []
 	
+
+	
+	for card in white_hand:
+		white_discard.append(card)
+	for card in black_hand:
+		black_discard.append(card)
+	
+	white_hand = []
+	black_hand = []
+	
+	manager.clear_hand()
 	
 	
 	turn_state = TURN_STATES.CHESS
@@ -408,8 +444,8 @@ func upkeep() -> void:
 			whiteElectricute = false;
 			for i in range(5):
 				for j in range(6):
-					if(board.getElectricute()):
-						board.deletePiece(i, j);
+					if(board.getElectricute(i, j)):
+						board.delete_piece(board.get_piece(Vector2(i,j)));
 		if(playerStored == Globals.COLORS.WHITE):
 			currentMana = currentMana + storedMana
 			storedMana = 0
@@ -419,18 +455,28 @@ func upkeep() -> void:
 			blackElectricute = false;
 			for i in range(5):
 				for j in range(6):
-					if(board.getElectricute()):
-						board.deletePiece(i, j);
+					if(board.getElectricute(i, j)):
+						board.delete_piece(board.get_piece(Vector2(i,j)));
 		if(playerStored == Globals.COLORS.BLACK):
 			currentMana = currentMana + storedMana
 			storedMana = 0
 			playerStored = -1
+	manaText.text = str(currentMana)
 	
 func assassinate() -> int:
+	print("start of ass")
 	#if threatened
+	
+	
+	var type = selectedPiece[0].piece_type
+	if type == Globals.PIECE_TYPES.KING:
+		return 0
+		
+		
+	print(type)
 	board.delete_piece(selectedPiece[0]);
 	
-	match selectedPiece[0].type:
+	match type:
 		Globals.PIECE_TYPES.QUEEN:
 			return 9
 		Globals.PIECE_TYPES.ROOK:
@@ -472,7 +518,7 @@ func potofgreed() -> int:
 	return true
 	
 func electrocute() -> int:
-	board.electrocute(selectedPiece[0].position.x, selectedPiece[0].position.y);
+	board.electricute(selectedSquare.x, selectedSquare.y);
 	if (status == Globals.COLORS.WHITE):
 		whiteElectricute = true;
 	else:
@@ -481,7 +527,7 @@ func electrocute() -> int:
 	
 func sacrifice() -> int:
 	board.delete_piece(selectedPiece[0])
-	match selectedPiece[0].type:
+	match selectedPiece[0].piece_type:
 		Globals.PIECE_TYPES.QUEEN:
 			return -9
 		Globals.PIECE_TYPES.ROOK:
@@ -497,9 +543,38 @@ func sacrifice() -> int:
 func ritual() -> int:
 	storedMana = currentMana;
 	playerStored = status
-	# SAM END TURN HEREREREREREREREREREREE
-	return 0
 	
+	
+	
+	skip_movement()
+	return 0
+
+
+func skip_movement():
+	
+	var hand = white_hand if player_color == Globals.COLORS.WHITE else black_hand
+	var deck = white_deck if player_color == Globals.COLORS.WHITE else black_deck
+	
+	
+	for card in hand:
+		deck.append(card)
+	
+	hand = []
+	
+	manager.clear_hand()
+	
+	
+	turn_state = TURN_STATES.CHESS
+	details.chessMode()
+	
+	
+	
+	status = Globals.COLORS.BLACK if status == Globals.COLORS.WHITE else Globals.COLORS.WHITE
+	turn_state = TURN_STATES.CARDS
+	details.setDetails(null)
+	init_turn()
+
+
 var hardcorePawn = false
 func hardcorePAEWNNNWNWNW() -> int:
 	board.delete_piece(selectedPiece[0])

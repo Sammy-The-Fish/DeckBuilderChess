@@ -1,6 +1,6 @@
 extends TextureButton
 
-@onready var menuScene = await("res://src/game.tscn")
+@onready var menuScene = await("res://src/Drafting/drafting_control.tscn")
 
 func _ready() -> void:
 	pressed.connect(set_scene);
