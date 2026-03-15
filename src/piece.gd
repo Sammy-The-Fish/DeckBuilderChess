@@ -13,6 +13,9 @@ const Y_OFFSET = Globals.CELL_SIZE /2
 @export var color: Globals.COLORS
 @export var board_position: Vector2
 
+var isFrozen = false
+var isJumped = false
+
 # game states
 var player_color;
 var status;
@@ -214,6 +217,27 @@ func king_threat_pos():
 		if pos != null:
 			positions.append(pos)
 	return positions
+	
+#func jumpMovement():
+	#if (selected_piece = Globals.PIECE_TYPES.ROOK):
+		
+
+const HARDCOREPAWN_SPOT_INCREMENTS = [[1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1]];
+func hardcorepawn_threat_pos():
+	var positions = []
+	for inc in HARDCOREPAWN_SPOT_INCREMENTS:
+		var pos = board_handle.spot_search_threat(
+			color,
+			board_position[0], board_position[1],
+			inc[0], inc[1]
+		)
+		if pos != null:
+			positions.append(pos)
+	return positions
+	
+	
+	
+	 
 	
 	
 	

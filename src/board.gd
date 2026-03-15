@@ -11,7 +11,8 @@ extends Node2D
 @export var black_cell_color: Color = Color("#222222")
 
 const CELL_SIZE = Globals.CELL_SIZE
-
+const rows = 6
+const collums = 5
 
 
 # Called when the node enters the scene tree for the first time.
@@ -21,8 +22,8 @@ func _ready() -> void:
 
 
 func draw_board():
-	for x in range(8):
-		for y in range(8):
+	for x in range(collums):
+		for y in range(rows):
 				draw_cell(x, y)
 			
 			
@@ -42,7 +43,7 @@ func init_pieces():
 	for piece_tuple in Globals.INITIAL_PIECE_SET_SINGLE:
 		var piece_type = piece_tuple[0]
 		var black_piece_pos = Vector2(piece_tuple[1], piece_tuple[2])
-		var white_piece_pos = Vector2(piece_tuple[1], 8 -  1 - piece_tuple[2])
+		var white_piece_pos = Vector2(piece_tuple[1], rows -  1 - piece_tuple[2])
 		
 		# Create black piece
 		var black_piece = piece_scene.instantiate()
@@ -78,14 +79,16 @@ func get_piece(pos: Vector2):
 		if piece.board_position == pos:
 			return piece
 
+func set_piece(pos: Vector2, piece) -> void:
+	piece.board_position = pos
 
 func get_pos_under_mouse():
 	var pos = get_global_mouse_position()
 	pos.x = int((pos.x - position.x) / Globals.CELL_SIZE)
 	pos.y = int((pos.y - position.y) / Globals.CELL_SIZE)
-	if (pos.x < 0 || pos.x > 8):
+	if (pos.x < 0 || pos.x > collums):
 		return null
-	if (pos.y <0 || pos.y > 8):
+	if (pos.y <0 || pos.y > rows):
 		return null
 	return pos
 
@@ -128,7 +131,7 @@ func spot_search_threat(
 	cur_x += inc_x
 	cur_y += inc_y
 	
-	if cur_x >= 8 or cur_x < 0 or cur_y >= 8 or cur_y < 0:
+	if cur_x >= rows or cur_x < 0 or cur_y >= collums or cur_y < 0: #CHECK THIS PLEASE GOD
 		return
 	
 	var cur_pos = Vector2(cur_x, cur_y)
@@ -151,7 +154,7 @@ func beam_search_threat(own_color, cur_x, cur_y, inc_x, inc_y):
 	
 	# Keep moving in increment direction to find either a blocked pieces
 	# or out of board
-	while cur_x >= 0 and cur_x < 8 and cur_y >= 0 and cur_y < 8:
+	while cur_x >= 0 and cur_x < 5 and cur_y >= 0 and cur_y < 6:
 		var cur_pos = Vector2(cur_x, cur_y)
 		var cur_piece = get_piece(cur_pos)
 		if cur_piece != null:
@@ -163,3 +166,20 @@ func beam_search_threat(own_color, cur_x, cur_y, inc_x, inc_y):
 		cur_y += inc_y
 	
 	return threat_pos
+	
+var grid = []
+
+func electricute(x, y) -> void:
+	if (grid == []):
+		grid.resize(5)
+		for i in range(5):
+			grid[i] = []
+			grid[i].resize(6)
+	
+	grid[x][y] = true;
+	
+func getElectricute(x, y) -> bool:
+	return grid[x][y];
+	
+func deElectricute(x, y) -> void:
+	grid[x][y] = false;

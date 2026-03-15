@@ -6,6 +6,14 @@ var player_color;
 var status; # who is playing
 var player2_type; # Where AI or Human is playing
 
+var turnCount = 0;
+var currentMana = 0;
+var maxMana = 0
+
+var storedMana;
+var playerStored
+
+
 const DRAW_AMOUNT = 5
 
 enum TURN_STATES {
@@ -13,8 +21,8 @@ enum TURN_STATES {
 	CHESS
 }
 
-var white_deck = [Cards.CARDS.JUMP, Cards.CARDS.JUMP]
-var black_deck = []
+var white_deck = [Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP]
+var black_deck = [Cards.CARDS.ASSASSINATE, Cards.CARDS.ASSASSINATE, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP]
 
 var white_hand = []
 var black_hand = []
@@ -135,14 +143,25 @@ func init_turn():
 	var deck: Array
 	var hand: Array
 	var discard: Array
+	
+
+	
 	if (status == Globals.COLORS.WHITE):
 		deck = white_deck
 		hand = white_hand
 		discard = white_discard
+		turnCount += 1
 	else:
 		deck = black_deck
 		hand = black_hand
 		discard = black_discard
+	
+	if (turnCount < 9):
+		maxMana += 1
+		currentMana = maxMana
+	else:
+		currentMana = 9
+	
 	deck.shuffle()
 	# REPLACE WITH DRAW SIZE LATER
 	for i in range(2):
@@ -168,6 +187,8 @@ func init_game():
 	
 	
 func drop_piece():
+	print(">>>>>>>>>>> ", selected_piece.board_position)
+	
 	var to_move = board.get_pos_under_mouse()
 	if valid_move(selected_piece.board_position, to_move):
 		# For valid move:
@@ -188,8 +209,22 @@ func drop_piece():
 
 
 func valid_move(from_pos, to_pos):
+	print(selected_piece)
+	#print("valid move")
+	#return jumpMovement(from_pos,to_pos)
+
+	
+	
 	var board_copy = board.clone()
 	var src_piece = board_copy.get_piece(from_pos)
+	
+	print(from_pos)
+	print(to_pos)
+	
+	#if(selected_piece != null and selected_piece.isJumped):
+		#jumpMovement(from_pos, to_pos)
+	
+	
 	
 	# If we cannot move to threatened or moveable position
 	if(
@@ -265,24 +300,70 @@ func _on_test_button_pressed() -> void:
 	var card = CardStats.new(0, 3, "this is jump!!!!", "jump", "res://cards/Jump.png", Globals.TARGETS.PIECE, 2)
 	selectedCard = card
 	
-	
-	
-	
+func jumpMovement(from_pos, to_pos):	
+	print("LLOOOOK AT MEEEEEE!!!!<><><><><><><><><><><><><><><><><>")
 
-
+	#if (selectedCard == null) : return false
+	
+	if selected_piece.piece_type == Globals.PIECE_TYPES.ROOK:
+		if (to_pos.x == selectedPiece[0].x) or (to_pos.y == selectedPiece[0].y) and (board.get_piece(to_pos) == null):
+			return true
+		else:
+			return false
+	elif selected_piece.piece_type == Globals.PIECE_TYPES.QUEEN:
+		print("LLOOOOK AT MEEEEEE!!!!<><><><><><><><><><><><><><><><><>")
+		if (to_pos.x == selectedPiece[0].x) or (to_pos.y == selectedPiece[0].y) or (abs(from_pos.x - to_pos.x) == abs(from_pos.y - to_pos.y)) and (board.get_piece(to_pos) == null):
+			return true
+		else:
+			return false
+	elif selected_piece.piece_type == Globals.PIECE_TYPES.BISHOP:
+		if (abs(from_pos.x - to_pos.x) == abs(from_pos.y - to_pos.y)) and (board.get_piece(to_pos) == null):
+			return true
+		else:
+			return false
+	return false
+	#else:
+		#valid_move(to_pos, from_pos)
+		
+		
+			
+		
+	
+func jump() -> int:
+	selectedPiece.isJumped = true
+	return Cards.cardList[Cards.CARDS.JUMP].manacost
+	
+	
 func _on_execute_card_button_pressed() -> void:
 	# massive fuck off switch statement which is yet to be implemented
-	
+	var requiredMana = selectedCard.mana_cost
+	if(selectedCard.mana_cost == -1):
+		match selectedPiece[0].type:
+			Globals.PIECE_TYPES.QUEEN:
+				requiredMana = 9
+			Globals.PIECE_TYPES.ROOK:
+				requiredMana = 5
+			Globals.PIECE_TYPES.BISHOP:
+				requiredMana = 3
+			Globals.PIECE_TYPES.KNIGHT:
+				requiredMana = 3
+			Globals.PIECE_TYPES.PAWN:
+				requiredMana = 1
+				
+	print(currentMana)
+	print(requiredMana)
+	#if(currentMana >= requiredMana):
 	selectedCard = null
 	for piece in selectedPiece:
 		piece.modulate =Color("#FFFFFF")
 	selectedPiece = []
-	
+	potofgreed()
 	manager.remove_selected_node()
 	
 	
 	selector.visible = false
 	details.setDetails(null)
+	
 	
 	
 
@@ -311,3 +392,116 @@ func _on_manager_card_selected(id: Cards.CARDS) -> void:
 	selector.visible=false
 	details.setDetails(null)
 	details.setDetails(selectedCard)
+
+var whiteElectricute = false;
+var blackElectricute = false;
+func upkeep() -> void:
+	if(hardcorePawn != false):
+		board.delete_piece(hardcorePawn)
+		#SAM ADD REGULAR PAWN HERE
+		hardcorePawn = false;
+	
+	if (status == Globals.COLORS.WHITE):
+		if(whiteElectricute):
+			whiteElectricute = false;
+			for i in range(5):
+				for j in range(6):
+					if(board.getElectricute()):
+						board.deletePiece(i, j);
+		if(playerStored == Globals.COLORS.WHITE):
+			currentMana = currentMana + storedMana
+			storedMana = 0
+			playerStored = -1
+	else:
+		if(blackElectricute):
+			blackElectricute = false;
+			for i in range(5):
+				for j in range(6):
+					if(board.getElectricute()):
+						board.deletePiece(i, j);
+		if(playerStored == Globals.COLORS.BLACK):
+			currentMana = currentMana + storedMana
+			storedMana = 0
+			playerStored = -1
+	
+func assassinate() -> int:
+	#if threatened
+	board.delete_piece(selectedPiece[0]);
+	
+	match selectedPiece[0].type:
+		Globals.PIECE_TYPES.QUEEN:
+			return 9
+		Globals.PIECE_TYPES.ROOK:
+			return 5
+		Globals.PIECE_TYPES.BISHOP:
+			return 3
+		Globals.PIECE_TYPES.KNIGHT:
+			return 3
+		Globals.PIECE_TYPES.PAWN:
+			return 1
+	return -100
+	
+func potofgreed() -> int:
+	var deck: Array
+	var hand: Array
+	var discard: Array
+	var drawn: Array
+	if (status == Globals.COLORS.WHITE):
+		deck = white_deck
+		hand = white_hand
+		discard = white_discard
+	else:
+		deck = black_deck
+		hand = black_hand
+		discard = black_discard
+	
+	for i in range(3):
+		print("test")
+		var cards = deck.pop_front()
+		hand.push_front(cards)
+		drawn.push_front(cards)
+		if deck.size() == 0:
+			for card in discard:
+				deck.append(card)
+			deck.shuffle()
+	
+	for card in drawn:
+		manager.addCard(Cards.cardList[card])
+	return true
+	
+func electrocute() -> int:
+	board.electrocute(selectedPiece[0].position.x, selectedPiece[0].position.y);
+	if (status == Globals.COLORS.WHITE):
+		whiteElectricute = true;
+	else:
+		blackElectricute = true;
+	return selectedCard.mana_cost
+	
+func sacrifice() -> int:
+	board.delete_piece(selectedPiece[0])
+	match selectedPiece[0].type:
+		Globals.PIECE_TYPES.QUEEN:
+			return -9
+		Globals.PIECE_TYPES.ROOK:
+			return -5
+		Globals.PIECE_TYPES.BISHOP:
+			return -3
+		Globals.PIECE_TYPES.KNIGHT:
+			return -3
+		Globals.PIECE_TYPES.PAWN:
+			return -1
+	return -100
+	
+func ritual() -> int:
+	storedMana = currentMana;
+	playerStored = status
+	# SAM END TURN HEREREREREREREREREREREE
+	return 0
+	
+var hardcorePawn = false
+func hardcorePAEWNNNWNWNW() -> int:
+	board.delete_piece(selectedPiece[0])
+	#WAY TO ADD PIECE HERE SHOULD BE HARDCORE PAWN
+	#hardcorePawn = new hardcore pawn piece
+	return selectedCard.mana_cost
+	
