@@ -19,6 +19,7 @@ grow_vertical = 2
 
 [node name="CardContainer" type="GridContainer" parent="VBoxContainer" unique_id=1840760853]
 layout_mode = 2
+columns = 10
 
 [node name="Label" type="Label" parent="VBoxContainer" unique_id=989316458]
 layout_mode = 2
