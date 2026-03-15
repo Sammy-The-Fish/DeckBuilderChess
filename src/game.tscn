@@ -87,6 +87,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="Mana" unique_id=366139420]
 layout_mode = 1
@@ -101,6 +102,7 @@ offset_right = 56.15979
 offset_bottom = 11.880005
 grow_horizontal = 0
 grow_vertical = 0
+mouse_filter = 2
 color = Color(0.16078432, 1, 1, 1)
 
 [node name="ManaLabel" type="RichTextLabel" parent="Mana/ColorRect" unique_id=21663282]
