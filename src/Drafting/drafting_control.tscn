@@ -35,13 +35,11 @@ text = "No Card Selected"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Button" type="Button" parent="VBoxContainer" unique_id=2039616134]
-layout_mode = 2
-
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=837997098]
 custom_minimum_size = Vector2(0, 300)
 layout_direction = 2
 layout_mode = 2
+mouse_filter = 2
 alignment = 1
 
 [node name="Button" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=753333057]
@@ -51,13 +49,19 @@ text = "Add Selected Card to your deck"
 expand_icon = true
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1058683271]
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 35
 text = "Player 1's Turn to pick a card"
+autowrap_mode = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/HBoxContainer" unique_id=515289766]
 position = Vector2(180, 40)
 scale = Vector2(0.5, 0.5)
 
-[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_revive_button_pressed"]
+[node name="Button2" type="Button" parent="VBoxContainer" unique_id=2039616134]
+layout_mode = 2
+text = "Press to skip a draw and revive"
+
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_revive_button_pressed"]

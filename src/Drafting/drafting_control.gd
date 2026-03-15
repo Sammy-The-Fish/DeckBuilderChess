@@ -8,7 +8,7 @@ extends Control
 @onready var CardScene = preload("res://Scenes/card.tscn")
 @onready var ReviveButton = $VBoxContainer/Button
 
-var cardsToBeDrafted = 22 #If the value is 6 it is the between rounds draft, if 22 then the pre game draft, these are the only two drafts that can occur so the only values of this variable
+var cardsToBeDrafted = 6 #If the value is 6 it is the between rounds draft, if 22 then the pre game draft, these are the only two drafts that can occur so the only values of this variable
 var playerToDrawFirst = 1
 var rawCards = []
 var selectedButtonIndex = -1
@@ -23,6 +23,8 @@ func _ready() -> void:
 	if (playerToDrawFirst == 2) :
 		player1Turn = false
 		PlayerTurnLabel.text = "Player 2's Turn to pick a card or choose to revive a piece"
+	elif cardsToBeDrafted == 6 :
+		PlayerTurnLabel.text = "Player 1's Turn to pick a card or choose to revive a piece"
 	for x in range(cardsToBeDrafted) :
 		rawCards.append(Cards.CARDS.values().pick_random())
 	rawCards.sort()
@@ -108,6 +110,8 @@ func _on_revive_button_pressed() -> void:
 	if player1Turn == true :
 		player1Revives += 1
 		player1Turn = false
+		PlayerTurnLabel.text = "Player 2's Turn to pick a card or choose to revive a piece"
 	else :
 		player2Revives += 1
 		player1Turn = true
+		PlayerTurnLabel.text = "Player 1's Turn to pick a card or choose to revive a piece"
