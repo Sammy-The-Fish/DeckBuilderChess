@@ -9,6 +9,7 @@ extends Node2D
 
 @export var white_cell_color: Color = Color("#AAAAAA")
 @export var black_cell_color: Color = Color("#222222")
+@export var frozen_cell_color: Color = Color("86c3feff")
 
 const CELL_SIZE = Globals.CELL_SIZE
 const rows = 6
@@ -115,9 +116,6 @@ func register_king(pos, col):
 			
 			
 	
-
-
-
 # searching 
 func spot_search_threat(
 	own_color, 
@@ -164,3 +162,4 @@ func beam_search_threat(own_color, cur_x, cur_y, inc_x, inc_y):
 		cur_y += inc_y
 	
 	return threat_pos
+	

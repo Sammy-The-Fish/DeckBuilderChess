@@ -143,6 +143,12 @@ text = "9"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="freezingEffect" type="ColorRect" parent="." unique_id=1742088638]
+visible = false
+offset_right = 100.0
+offset_bottom = 100.0
+color = Color(0.11764706, 1, 1, 0.49803922)
+
 [connection signal="card_selected" from="manager" to="." method="_on_manager_card_selected"]
 [connection signal="pressed" from="details/executeCardButton" to="." method="_on_execute_card_button_pressed"]
 [connection signal="pressed" from="details/proceedButton" to="." method="_on_proceed_button_pressed"]

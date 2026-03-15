@@ -41,10 +41,12 @@ var previous_position = null;
 @onready var board = $board
 @onready var details = $details
 @onready var manager = $manager
+@onready var freeze_effect = $freezingEffect
 
 
 func _ready():
 	init_game()
+
 	
 
 	
@@ -102,6 +104,7 @@ func manageSelection():
 
 
 func init_turn():
+	
 	var deck: Array
 	var hand: Array
 	var discard: Array
@@ -126,7 +129,7 @@ func init_turn():
 	
 	deck.shuffle()
 	# REPLACE WITH DRAW SIZE LATER
-	for i in range(2):
+	for i in range(DRAW_AMOUNT):
 		print("test")
 		hand.push_front(deck.pop_front())
 		if deck.size() == 0:
@@ -172,10 +175,8 @@ func drop_piece():
 
 func valid_move(from_pos, to_pos):
 	print(selected_piece)
-	#print("valid move")
+	print("valid move")
 	#return jumpMovement(from_pos,to_pos)
-
-	
 	
 	var board_copy = board.clone()
 	var src_piece = board_copy.get_piece(from_pos)
@@ -184,32 +185,40 @@ func valid_move(from_pos, to_pos):
 	print(to_pos)
 	
 	#if(selected_piece != null and selected_piece.isJumped):
-		#jumpMovement(from_pos, to_pos)
+	#	jumpMovement(from_pos, to_pos)
 	
 	
-	
-	# If we cannot move to threatened or moveable position
-	if(
-		to_pos not in src_piece.get_moveable_positions() 
-		and 
-		to_pos not in src_piece.get_threatened_positions()
-	):
-		return false
-	
-	
-	var dst_piece = board_copy.get_piece(to_pos)
-	if dst_piece != null:
-		board_copy.delete_piece(dst_piece)
-	src_piece.move_position(to_pos)
-	
-	# Check whether there is no check threaten the color
-	for piece in board_copy.pieces:
-		if status == Globals.COLORS.BLACK and board_copy.black_king_pos in piece.get_threatened_positions():
+	if (!selected_piece.isFrozen):
+		# If we cannot move to threatened or moveable position
+		if(
+			to_pos not in src_piece.get_moveable_positions() 
+			and 
+			to_pos not in src_piece.get_threatened_positions()
+		):
 			return false
-		if status == Globals.COLORS.WHITE and board_copy.white_king_pos in piece.get_threatened_positions():
-			return false
+		
+		
+		var dst_piece = board_copy.get_piece(to_pos)
+		if dst_piece != null:
+			board_copy.delete_piece(dst_piece)
+		src_piece.move_position(to_pos)
+		
+		# Check whether there is no check threaten the color
+		for piece in board_copy.pieces:
+			if status == Globals.COLORS.BLACK and board_copy.black_king_pos in piece.get_threatened_positions():
+				return false
+			if status == Globals.COLORS.WHITE and board_copy.white_king_pos in piece.get_threatened_positions():
+				return false
+		
+		
+		if(selected_piece != null and selected_piece.isJumped):
+			jumpMovement(from_pos, to_pos)
+	
+	
 	
 	return true
+	
+	
 	
 	
 func get_valid_moves():
@@ -305,16 +314,16 @@ func _on_manager_card_selected(id: Cards.CARDS) -> void:
 func jumpMovement(from_pos, to_pos):	
 	print("LLOOOOK AT MEEEEEE!!!!<><><><><><><><><><><><><><><><><>")
 
-	#if (selectedCard == null) : return false
+	if (selected_piece == null) : return false
 	
 	if selected_piece.piece_type == Globals.PIECE_TYPES.ROOK:
-		if (to_pos.x == selectedPiece[0].x) or (to_pos.y == selectedPiece[0].y) and (board.get_piece(to_pos) == null):
+		if (to_pos.x == selected_piece.board_position.x) or (to_pos.y == selected_piece.board_position.y) and (board.get_piece(to_pos) == null):
 			return true
 		else:
 			return false
 	elif selected_piece.piece_type == Globals.PIECE_TYPES.QUEEN:
 		print("LLOOOOK AT MEEEEEE!!!!<><><><><><><><><><><><><><><><><>")
-		if (to_pos.x == selectedPiece[0].x) or (to_pos.y == selectedPiece[0].y) or (abs(from_pos.x - to_pos.x) == abs(from_pos.y - to_pos.y)) and (board.get_piece(to_pos) == null):
+		if (to_pos.x == selected_piece.board_position.x) or (to_pos.y == selected_piece.board_position.y) or (abs(from_pos.x - to_pos.x) == abs(from_pos.y - to_pos.y)) and (board.get_piece(to_pos) == null):
 			return true
 		else:
 			return false
@@ -323,16 +332,32 @@ func jumpMovement(from_pos, to_pos):
 			return true
 		else:
 			return false
-	return false
-	#else:
-		#valid_move(to_pos, from_pos)
-		
-		
-			
-		
+	#return false
 	
+	#else:
+	#	valid_move(to_pos, from_pos)
+		
+func freezeLogic():
+	if selected_piece.isFrozen:
+		board.draw_cell(selected_piece.board_position.x, selected_piece.board_position.y)
+		
+
+	
+	
+
 func jump() -> int:
-	selectedPiece.isJumped = true
+	selected_piece.isJumped = true
 	return Cards.cardList[Cards.CARDS.JUMP].manacost
+	
+func freeze() -> int:
+	selected_piece.isFrozen = true
+	var pos = selected_piece.board_position
+	freeze_effect.position = Vector2(
+		board.position.x + (pos.x * Globals.CELL_SIZE),
+		board.position.y + (pos.y * Globals.CELL_SIZE)
+	)
+	freeze_effect.visible = true
+	
+	return Cards.cardList[Cards.CARDS.FREEZE].manacost
 	
 	
