@@ -44,5 +44,13 @@ func removeCardFromHand(card):
 		playerHand.erase(card)
 		updateHandPositions()
 
-
+func deselect_all():
+	for card in playerHand:
+		card.isClicked = false
+		
+func remove_selected_node():
+	for card in playerHand:
+		if card.isClicked:
+			playerHand.erase(card)
+			card.queue_free()
 # Called every frame. 'delta' is the elapsed time since the previous frame.s

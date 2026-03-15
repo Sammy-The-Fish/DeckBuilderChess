@@ -6,10 +6,22 @@ var player_color;
 var status; # who is playing
 var player2_type; # Where AI or Human is playing
 
+const DRAW_AMOUNT = 5
+
 enum TURN_STATES {
 	CARDS,
 	CHESS
 }
+
+var white_deck = [Cards.CARDS.JUMP, Cards.CARDS.JUMP]
+var black_deck = []
+
+var white_hand = []
+var black_hand = []
+
+
+var white_discard = []
+var black_discard = []
 
 var turn_state = TURN_STATES.CARDS
 var selectedCard: CardStats = null
@@ -23,16 +35,19 @@ var previous_position = null;
 
 @onready var board = $board
 @onready var details = $details
+@onready var manager = $manager
+
 
 func _ready():
 	init_game()
 	
-	
+
 	
 func _input(event) :
 	if (turn_state == TURN_STATES.CARDS):
+		if (selectedCard == null):
+			return
 		if Input.is_action_just_pressed("clicked"):
-			print("yayayayay")
 			manageSelection()
 			
 	if (turn_state == TURN_STATES.CHESS):
@@ -62,13 +77,12 @@ func _input(event) :
 				
 	
 func manageSelection():
-	if (selectedCard == null):
-			return
 	match selectedCard.target_type:
 		Globals.TARGETS.PIECE:
 			var pos = board.get_pos_under_mouse()
 			if pos == null : return
 			var piece = board.get_piece(pos)
+			if piece == null: return
 			if selectedPiece.size() == selectedCard.target_quantity:
 				var unselected = selectedPiece.pop_back()
 				unselected.modulate = Color("#FFFFFF")
@@ -78,15 +92,43 @@ func manageSelection():
 			
 			for selected in selectedPiece:
 				selected.modulate = Color("#FF0000")
-			
+				
+			details.setQuantitySelected(selectedPiece.size())
 
+
+func init_turn():
+	var deck: Array
+	var hand: Array
+	var discard: Array
+	if (status == Globals.COLORS.WHITE):
+		deck = white_deck
+		hand = white_hand
+		discard = white_discard
+	else:
+		deck = black_deck
+		hand = black_hand
+		discard = black_discard
+	deck.shuffle()
+	# REPLACE WITH DRAW SIZE LATER
+	for i in range(2):
+		print("test")
+		hand.push_front(deck.pop_front())
+		if deck.size() == 0:
+			for card in discard:
+				deck.append(card)
+			deck.shuffle()
 	
+	for card in hand:
+		manager.addCard(Cards.cardList[card])
+	
+
 func init_game():
 	game_over = false
 	is_dragging = false 
 	player_color = Globals.COLORS.WHITE
 	status = Globals.COLORS.WHITE
 	turn_state = TURN_STATES.CARDS
+	init_turn()
 	
 	
 	
@@ -102,6 +144,9 @@ func drop_piece():
 		selected_piece.move_position(to_move)
 		# - change current status of active color
 		status = Globals.COLORS.BLACK if status == Globals.COLORS.WHITE else Globals.COLORS.WHITE
+		turn_state = TURN_STATES.CARDS
+		details.setDetails(null)
+		init_turn()
 		return true
 	return false
 
@@ -182,10 +227,45 @@ func on_card_select():
 	pass
 
 func _on_test_button_pressed() -> void:
-	var card = CardStats.new(0, 3, "this is jump!!!!", "jump", "res://cards/Jump.png", Globals.TARGETS.PIECE, 1)
+	var card = CardStats.new(0, 3, "this is jump!!!!", "jump", "res://cards/Jump.png", Globals.TARGETS.PIECE, 2)
 	selectedCard = card
-	details.setDetails(card)
 	
 	
 	
 	
+
+
+func _on_execute_card_button_pressed() -> void:
+	# massive fuck off switch statement which is yet to be implemented
+	
+	selectedCard = null
+	for piece in selectedPiece:
+		piece.modulate =Color("#FFFFFF")
+	selectedPiece = []
+	
+	manager.remove_selected_node()
+	
+	details.setDetails(null)
+	
+	
+
+
+func _on_proceed_button_pressed() -> void:
+	selectedCard = null
+	for piece in selectedPiece:
+		piece.modulate =Color("#FFFFFF")
+	
+	
+		
+	selectedPiece = []
+	
+	
+	
+	turn_state = TURN_STATES.CHESS
+	details.chessMode()
+
+
+func _on_manager_card_selected(id: Cards.CARDS) -> void:
+	selectedCard = Cards.cardList[id]
+	details.setDetails(null)
+	details.setDetails(selectedCard)

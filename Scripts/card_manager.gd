@@ -2,6 +2,8 @@ extends Node2D
 
 const collisionMaskCard = 1
 
+signal card_selected(id: Cards.CARDS)
+
 var cardBeingDragged
 var screenSize
 var isHoveringOnCard
@@ -12,9 +14,6 @@ var isHoveringOnCard
 
 func _ready() -> void:
 	screenSize = get_viewport_rect().size
-	addCard()
-	addCard()
-	
 
 func _process(delta: float) -> void:
 	if cardBeingDragged:
@@ -33,21 +32,25 @@ func _input(event):
 			if cardBeingDragged:
 				finshDrag()
 
-func addCard():
+func addCard(card: CardStats):
 	var newCard = cardScene.instantiate()
+	
+	newCard.clicked.connect(_on_card_clicked)
 	add_child(newCard)
-	newCard.name = "CardTemp"
+	newCard.name = card.card_name
+	newCard.image.texture = load(card.sprite_path)
+	newCard.id = card.id
 	print(playerHand)
 	playerHand.addCardToHand(newCard) 
 
 
 func startDrag(card):
 	cardBeingDragged = card
-	card.scale = Vector2(1, 1)
+	#card.scale = Vector2(1, 1)
 	
 
 func finshDrag():
-	cardBeingDragged.scale = Vector2(1.1, 1.1)	
+	#cardBeingDragged.scale = Vector2(1.1, 1.1)	
 	playerHand.addCardToHand(cardBeingDragged)
 	cardBeingDragged = null
 	
@@ -103,14 +106,18 @@ func onHoveredOffCard(card):
 
 func highlightCard(card, hovered):
 	if hovered:
-		card.scale = Vector2(1.1, 1.1)
+		#card.scale = Vector2(1.1, 1.1)
 		card.z_index = 2
 	else:
-		card.scale = Vector2(1,1)
+		#card.scale = Vector2(1,1)
 		card.z_index = 1
 		
 	
+func remove_selected_node():
+	playerHand.remove_selected_node()
 
-
-
+func _on_card_clicked(id: Cards.CARDS, card):
+	emit_signal("card_selected", id)
+	playerHand.deselect_all()
+	card.isClicked = true
 # Called every frame. 'delta' is the elapsed time since the previous frame.

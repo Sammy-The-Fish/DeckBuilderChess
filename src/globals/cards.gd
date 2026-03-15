@@ -5,7 +5,7 @@ enum CARDS {
 	JUMP
 }
 
-# dictionay of CARDS to CardStat objects
+# dictionay of CARDS to CardStat objectsl
 var cardList = {
-	CARDS.JUMP : CardStats.new(CARDS.JUMP, 3, "this is jymp", "Jump", "res://...", Globals.TARGETS.PIECE, 1)
+	CARDS.JUMP : CardStats.new(CARDS.JUMP, 3, "this is jymp", "Jump", "res://cards/Jump.png", Globals.TARGETS.PIECE, 1)
 }
