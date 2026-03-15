@@ -68,10 +68,10 @@ func init_pieces():
 		)
 		pieces.append(white_piece)
 		
-		if piece_type == Globals.PIECE_TYPES.KING:
-			register_king(white_piece_pos, Globals.COLORS.WHITE)
-			register_king(black_piece_pos, Globals.COLORS.BLACK)
-			
+		#if piece_type == Globals.PIECE_TYPES.KING:
+			#register_king(white_piece_pos, Globals.COLORS.WHITE)
+			#register_king(black_piece_pos, Globals.COLORS.BLACK)
+			#
 
 
 
@@ -182,3 +182,26 @@ func getElectricute(x, y) -> bool:
 	
 func deElectricute(x, y) -> void:
 	grid[x][y] = false;
+
+
+func check_for_kings():
+	var black_check = false
+	var white_chel = false
+	for i in range (collums):
+		for j in range (rows):
+			var current_piece =  get_piece(Vector2(i,j))
+			if current_piece != null: 
+				if current_piece.piece_type == Globals.PIECE_TYPES.KING:
+					if current_piece.color == Globals.COLORS.BLACK:
+						black_check = true	
+					else:
+						white_chel = true
+						
+	if (black_check && white_chel):
+		return null
+	elif black_check:
+		return Globals.COLORS.BLACK
+	else:
+		return Globals.COLORS.WHITE
+
+	

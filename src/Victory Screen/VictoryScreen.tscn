@@ -4,6 +4,8 @@
 [ext_resource type="FontFile" uid="uid://dci8481svut55" path="res://fonts/Micro5-Regular.ttf" id="2_civrm"]
 [ext_resource type="Texture2D" uid="uid://c0j6cuprl6an8" path="res://cards/Wall1.png" id="2_xywy5"]
 [ext_resource type="Texture2D" uid="uid://cv1c50id05d11" path="res://cards/Crown.png" id="4_xywy5"]
+[ext_resource type="Texture2D" uid="uid://vdjeqwdoyye3" path="res://miscAssets/button.png" id="5_bd86h"]
+[ext_resource type="Texture2D" uid="uid://blyuvyi6dgcxx" path="res://miscAssets/buttonHover.png" id="6_sl0a6"]
 
 [node name="VictoryScreen" type="Control" unique_id=2027317286]
 layout_mode = 3
@@ -16,10 +18,10 @@ script = ExtResource("1_urrr5")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=245066829]
 layout_mode = 0
-offset_left = 2671.0
-offset_top = -532.00006
-offset_right = 3236.9429
-offset_bottom = 215.59222
+offset_left = 2446.0
+offset_top = -312.00006
+offset_right = 3011.9429
+offset_bottom = 435.59222
 rotation = 1.5707964
 scale = Vector2(5, 5)
 texture = ExtResource("2_xywy5")
@@ -55,3 +57,30 @@ offset_right = 1544.0
 offset_bottom = 435.0
 rotation = 0.39618975
 texture = ExtResource("4_xywy5")
+
+[node name="StartButton" type="TextureButton" parent="." unique_id=210543452]
+layout_mode = 0
+offset_left = 874.0
+offset_top = 672.0
+offset_right = 1124.0
+offset_bottom = 772.0
+texture_normal = ExtResource("5_bd86h")
+texture_pressed = ExtResource("6_sl0a6")
+texture_hover = ExtResource("6_sl0a6")
+texture_disabled = ExtResource("5_bd86h")
+texture_focused = ExtResource("5_bd86h")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="StartButton" unique_id=1147623423]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 11.0
+offset_right = 239.0
+offset_bottom = 91.0
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("2_civrm")
+theme_override_font_sizes/normal_font_size = 79
+text = "Start"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

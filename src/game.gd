@@ -1,10 +1,11 @@
 extends Node2D
 
+signal game_won(winner: Globals.COLORS)
+
 # Game States
 var game_over;
 var player_color;
 var status; # who is playing
-var player2_type; # Where AI or Human is playing
 
 var turnCount = 0;
 var currentMana = 0;
@@ -23,8 +24,8 @@ enum TURN_STATES {
 	CHESS
 }
 
-var white_deck = [Cards.CARDS.ELECTROCUTE, Cards.CARDS.ELECTROCUTE, Cards.CARDS.ELECTROCUTE, Cards.CARDS.ELECTROCUTE, Cards.CARDS.ELECTROCUTE, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP]
-var black_deck = [Cards.CARDS.ASSASSINATE, Cards.CARDS.ASSASSINATE, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP, Cards.CARDS.JUMP]
+@export var white_deck = []
+@export var black_deck = []
 
 var white_hand = []
 var black_hand = []
@@ -171,7 +172,6 @@ func init_turn():
 	deck.shuffle()
 	# REPLACE WITH DRAW SIZE LATER
 	for i in range(DRAW_AMOUNT):
-		print("test")
 		hand.push_front(deck.pop_front())
 		if deck.size() == 0:
 			for card in discard:
@@ -193,12 +193,11 @@ func init_game():
 	player_color = Globals.COLORS.WHITE
 	status = Globals.COLORS.WHITE
 	turn_state = TURN_STATES.CARDS
-	init_turn()
+	#init_turn()
 	
 	
 	
 func drop_piece():
-	print(">>>>>>>>>>> ", selected_piece.board_position)
 	
 	var to_move = board.get_pos_under_mouse()
 	if valid_move(selected_piece.board_position, to_move):
@@ -211,6 +210,13 @@ func drop_piece():
 		selected_piece.move_position(to_move)
 		# - change current status of active color
 		status = Globals.COLORS.BLACK if status == Globals.COLORS.WHITE else Globals.COLORS.WHITE
+		
+		var result = board.check_for_kings()
+		
+		if result != null:
+			game_won.emit(result)
+			print("-------------WINNNER------------")
+		
 		turn_state = TURN_STATES.CARDS
 		details.setDetails(null)
 		init_turn()
@@ -220,21 +226,19 @@ func drop_piece():
 
 
 func valid_move(from_pos, to_pos):
-	print(selected_piece)
-	print("valid move")
+	
 	#return jumpMovement(from_pos,to_pos)
 	
 	var board_copy = board.clone()
 	var src_piece = board_copy.get_piece(from_pos)
 	
-	print(from_pos)
-	print(to_pos)
+	
 	
 	#if(selected_piece != null and selected_piece.isJumped):
 	#	jumpMovement(from_pos, to_pos)
 	
 	
-	if (!selected_piece.isFrozen):
+	if (true):
 		# If we cannot move to threatened or moveable position
 		if(
 			to_pos not in src_piece.get_moveable_positions() 
@@ -299,7 +303,6 @@ func evaluate_end_game():
 	
 func set_win(who: Globals.PLAYER):
 	game_over = true
-	print("winner")
 	#if who == Globals.PLAYER.ONE:
 		#win_label.text = "Player One Won"
 	#else:
@@ -318,7 +321,6 @@ func _on_test_button_pressed() -> void:
 	selectedCard = card
 	
 func jumpMovement(from_pos, to_pos):	
-	print("LLOOOOK AT MEEEEEE!!!!<><><><><><><><><><><><><><><><><>")
 
 	if (selected_piece == null) : return false
 	
@@ -328,7 +330,6 @@ func jumpMovement(from_pos, to_pos):
 		else:
 			return false
 	elif selected_piece.piece_type == Globals.PIECE_TYPES.QUEEN:
-		print("LLOOOOK AT MEEEEEE!!!!<><><><><><><><><><><><><><><><><>")
 		if (to_pos.x == selected_piece.board_position.x) or (to_pos.y == selected_piece.board_position.y) or (abs(from_pos.x - to_pos.x) == abs(from_pos.y - to_pos.y)) and (board.get_piece(to_pos) == null):
 			return true
 		else:
@@ -343,32 +344,31 @@ func jumpMovement(from_pos, to_pos):
 	#else:
 	#	valid_move(to_pos, from_pos)
 		
-func freezeLogic():
-	if selected_piece.isFrozen:
-		board.draw_cell(selected_piece.board_position.x, selected_piece.board_position.y)
-		
+#func freezeLogic():
+#	if selected_piece.isFrozen:
+#		board.draw_cell(selected_piece.board_position.x, selected_piece.board_position.y)
+#		
 
 	
 	
 
-func jump() -> int:
-	selected_piece.isJumped = true
-	return Cards.cardList[Cards.CARDS.JUMP].manacost
+#func jump() -> int:
+#	selected_piece.isJumped = true
+#	return Cards.cardList[Cards.CARDS.JUMP].manacost
 	
-func freeze() -> int:
-	selected_piece.isFrozen = true
-	var pos = selected_piece.board_position
-	freeze_effect.position = Vector2(
-		board.position.x + (pos.x * Globals.CELL_SIZE),
-		board.position.y + (pos.y * Globals.CELL_SIZE)
-	)
-	freeze_effect.visible = true
+#func freeze() -> int:
+#	selected_piece.isFrozen = true
+#	var pos = selected_piece.board_position
+#	freeze_effect.position = Vector2(
+#		board.position.x + (pos.x * Globals.CELL_SIZE),
+#		board.position.y + (pos.y * Globals.CELL_SIZE)
+#	)
+#	freeze_effect.visible = true
 	
-	return Cards.cardList[Cards.CARDS.FREEZE].manacost
+#	return Cards.cardList[Cards.CARDS.FREEZE].manacost
 	
 	
 func _on_execute_card_button_pressed() -> void:
-	print(selectedPiece)
 	# massive fuck off switch statement which is yet to be implemented
 	var requiredMana = selectedCard.mana_cost
 	if(selectedCard.mana_cost == -1):
@@ -384,8 +384,7 @@ func _on_execute_card_button_pressed() -> void:
 			Globals.PIECE_TYPES.PAWN:
 				requiredMana = 1
 				
-	print(currentMana)
-	print(requiredMana)
+
 	#if(currentMana >= requiredMana):
 	#selectedCard = null
 	for piece in selectedPiece:
@@ -393,12 +392,10 @@ func _on_execute_card_button_pressed() -> void:
 	#potofgreed()
 	
 	
-	print(selectedCard)
 	if(currentMana >= requiredMana):
 		manager.remove_selected_node()
 		match selectedCard.id:
 			Cards.CARDS.POTOGREED:
-				print("here we be")
 				currentMana -= potofgreed()
 			Cards.CARDS.ASSASSINATE:
 				currentMana -= assassinate()
@@ -408,8 +405,8 @@ func _on_execute_card_button_pressed() -> void:
 				currentMana -= sacrifice()
 			Cards.CARDS.RITUAL:
 				currentMana -= ritual()
-			Cards.CARDS.HARDCOREPAWN:
-				currentMana -= hardcorePAEWNNNWNWNW()
+			#Cards.CARDS.HARDCOREPAWN:
+			#	currentMana -= hardcorePAEWNNNWNWNW()
 		
 	selector.visible = false
 	details.setDetails(null)
@@ -490,7 +487,6 @@ func upkeep() -> void:
 	manaText.text = str(currentMana)
 	
 func assassinate() -> int:
-	print("start of ass")
 	#if threatened
 	
 	
@@ -499,7 +495,6 @@ func assassinate() -> int:
 		return 0
 		
 		
-	print(type)
 	board.delete_piece(selectedPiece[0]);
 	
 	match type:
@@ -530,7 +525,6 @@ func potofgreed() -> int:
 		discard = black_discard
 	
 	for i in range(3):
-		print("test")
 		var cards = deck.pop_front()
 		hand.push_front(cards)
 		drawn.push_front(cards)

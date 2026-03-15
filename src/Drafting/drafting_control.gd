@@ -1,20 +1,23 @@
 extends Control
 
+signal finished_drafting
+
+
 @onready var CardContainer = $VBoxContainer/CardContainer
 @onready var CardTextLabel = $VBoxContainer/Label
 @onready var PlayerTurnLabel = $VBoxContainer/HBoxContainer/Label
 @onready var CardImageSprite = $VBoxContainer/HBoxContainer/Sprite2D
 @onready var textureButtonTags = preload("res://src/Drafting/textureButtonTags.tscn")
 @onready var CardScene = preload("res://Scenes/card.tscn")
-@onready var ReviveButton = $VBoxContainer/Button
+@onready var ReviveButton = $VBoxContainer/Button2
 
-var cardsToBeDrafted = 6 #If the value is 6 it is the between rounds draft, if 22 then the pre game draft, these are the only two drafts that can occur so the only values of this variable
+var cardsToBeDrafted = 22 #If the value is 6 it is the between rounds draft, if 22 then the pre game draft, these are the only two drafts that can occur so the only values of this variable
 var playerToDrawFirst = 1
 var rawCards = []
 var selectedButtonIndex = -1
 var player1Turn = true
-var player1Deck = []
-var player2Deck = []
+@export var player1Deck = []
+@export var player2Deck = []
 var player1Revives = 0
 var player2Revives = 0
 
@@ -51,8 +54,15 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	var tempSelectedCards = []
+	
+	
+	print("cards: ", CardContainer.get_child_count())
+	if CardContainer.get_child_count() == 0:
+		print(player1Deck)
+		#print("test!!!")
+		finished_drafting.emit()
+	
 	for x in CardContainer.get_children() :
-		print(x.id)
 		if x.isClicked == true:
 			tempSelectedCards.append(x.id)
 
@@ -81,7 +91,7 @@ func _process(delta: float) -> void:
 	
 
 func _on_button_pressed() -> void:
-	if selectedButtonIndex != -1 :
+	if selectedButtonIndex != -1:
 		for x in CardContainer.get_children() :
 			x.unselect()
 			CardTextLabel.text = "No cards selected"
@@ -102,6 +112,7 @@ func _on_button_pressed() -> void:
 		for x in CardContainer.get_children():
 			if x.id == selectedButtonIndex :
 				CardContainer.remove_child(x)
+				x.queue_free()
 				selectedButtonIndex = -1
 				break
 

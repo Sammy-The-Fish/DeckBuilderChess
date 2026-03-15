@@ -3,6 +3,9 @@ extends Node
 
 const CELL_SIZE = 100
 
+var black_wins = true
+
+
 enum PLAYER {
 	ONE, TWO
 }

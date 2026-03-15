@@ -140,6 +140,7 @@ visible = false
 offset_right = 100.0
 offset_bottom = 100.0
 color = Color(0.11764706, 1, 1, 0.49803922)
+
 [node name="selector" type="ColorRect" parent="." unique_id=1181800157]
 visible = false
 offset_right = 100.0
