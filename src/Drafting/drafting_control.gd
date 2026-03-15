@@ -11,19 +11,24 @@ func _ready() -> void:
 	for x in range(20) :
 		var randomCard = Cards.cardList[Cards.CARDS.values().pick_random()]
 		
-		var newCardButton = textureButtonTags.instantiate()
-		newCardButton.texture_normal = load(randomCard.sprite_path)
-		newCardButton.cardID = randomCard.id
-		newCardButton.cardName = randomCard.card_name
-		newCardButton.scale = Vector2(0.1, 0.1)
-		newCardButton.stretch_mode = true
-		#newCardButton.expand_icon = true
+		#var newCardButton = textureButtonTags.instantiate()
+		#newCardButton.texture_normal = load(randomCard.sprite_path)
+		##newCardButton.
+		#newCardButton.cardID = randomCard.id
+		#newCardButton.cardName = randomCard.card_name
+		#
+		#newCardButton.stretch_mode = TextureButton.STRETCH_SCALE
+		#newCardButton.custom_minimum_size = Vector2(75, 105)
+		#newCardButton.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		#newCardButton.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		#print(newCardButton.size)
 		#Make the card selected when pressed by updating the selected button index using the pressed signal from this utton also ideally some visual indicator? (depressed etc)
-		buttons.append(newCardButton)
+		#buttons.append(newCardButton)
+		
 
-	buttons.sort_custom(func(a,b): return a.cardName < b.cardName)
-	for x in buttons :
-		CardContainer.add_child(x)
+	#buttons.sort_custom(func(a,b): return a.cardName < b.cardName)
+	#for x in buttons :
+	#	CardContainer.add_child(x)
 		
 		
 		
