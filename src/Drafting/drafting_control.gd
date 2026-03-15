@@ -63,6 +63,17 @@ func _process(delta: float) -> void:
 			CardTextLabel.text = Cards.cardList[x].desc
 			CardImageSprite.texture = load(Cards.cardList[x].sprite_path)
 			break;
+	if tempSelectedCards.size() == 2 :
+		if tempSelectedCards[0] == tempSelectedCards[1] :
+			var found = false
+			for x in CardContainer.get_children() :
+				if x.id == selectedButtonIndex:
+					if found == false :
+						x.isClicked = true
+						found = true
+					else :
+						x.unselect()
+				
 	
 	
 	
