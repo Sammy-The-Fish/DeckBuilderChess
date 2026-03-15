@@ -19,8 +19,11 @@ enum CARDS {
 	TRIP
 }
 
-# dictionay of CARDS to CardStat objects
+# dictionay of CARDS to CardStat objectsl
 var cardList = {
+<<<<<<< HEAD
+	CARDS.JUMP : CardStats.new(CARDS.JUMP, 3, "this is jymp", "Jump", "res://cards/Jump.png", Globals.TARGETS.PIECE, 1)
+=======
 	CARDS.JUMP : CardStats.new(CARDS.JUMP, 2, "Ignore all units when moving this turn, must end in a empty space", "Jump", "res://cards/Jump.png", Globals.TARGETS.FRIENDLY_PIECE, 1),
 	CARDS.ASSASSINATE : CardStats.new(CARDS.ASSASSINATE, -1, "If one of your units could move and kill this piece this turn, instead kill it instantly. X is piece's value", "Assassinate", "res://cards/AssassinateFinal.png", Globals.TARGETS.FRIENDLY_PIECE, 1),
 	CARDS.ELECTROCUTE : CardStats.new(CARDS.ELECTROCUTE, 3, "Choose target tile, at the beginning of your next turn, if a unit is on this tile it is destroyed. This includes your own pieces", "Electrocute", "res://cards/electrocuteFinal.png", Globals.TARGETS.SQUARE, 1),
@@ -36,4 +39,5 @@ var cardList = {
 	CARDS.SPEAR : CardStats.new(CARDS.SPEAR, 1, "Pawns can also take directly in front of them this turn", "Spear", "res://cards/spear.png", Globals.TARGETS.PIECE, 1),
 	CARDS.SWAP : CardStats.new(CARDS.SWAP, 5, "Switch any two pieces, however when you play this you cannot play any more cards this turn or make a chess move (End your turn instantly)", "Swap", "res://cards/swap.png", Globals.TARGETS.PIECE, 2),
 	CARDS.TRIP : CardStats.new(CARDS.TRIP, 2, "Target friendly piece can move into one adjacent empty diagonal tile", "Trip", "res://cards/tripFinal.png", Globals.TARGETS.FRIENDLY_PIECE, 1)
+>>>>>>> cdc04c0577cdd6cf822ee83076818b42bf9ce85e
 }
