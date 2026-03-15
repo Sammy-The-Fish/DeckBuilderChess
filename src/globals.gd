@@ -18,6 +18,7 @@ enum PIECE_TYPES {
 	QUEEN,
 	KING,
 	PAWN,
+	HARDCOREPAWN
 }
 
 
@@ -28,7 +29,8 @@ const SPRITE_MAPPING = {
 		PIECE_TYPES.KNIGHT : "res://pieces/blackKnight.png",
 		PIECE_TYPES.QUEEN : "res://pieces/blackQueen.png" ,
 		PIECE_TYPES.KING : "res://pieces/blackKing.png" ,
-		PIECE_TYPES.PAWN : "res://pieces/blackPawn.png"
+		PIECE_TYPES.PAWN : "res://pieces/blackPawn.png",
+		PIECE_TYPES.HARDCOREPAWN : "res://pieces/blackPawn.png",
 	},
 	COLORS.WHITE : {
 		PIECE_TYPES.ROOK : "res://pieces/whiteRook.png",
@@ -36,7 +38,8 @@ const SPRITE_MAPPING = {
 		PIECE_TYPES.KNIGHT : "res://pieces/whiteKnight.png",
 		PIECE_TYPES.QUEEN : "res://pieces/whiteQueen.png" ,
 		PIECE_TYPES.KING : "res://pieces/whiteKing.png" ,
-		PIECE_TYPES.PAWN : "res://pieces/whitePawn.png"
+		PIECE_TYPES.PAWN : "res://pieces/whitePawn.png",
+		PIECE_TYPES.HARDCOREPAWN : "res://pieces/whitePawn.png",
 	}
 }
 

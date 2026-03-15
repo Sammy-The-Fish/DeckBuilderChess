@@ -148,6 +148,10 @@ visible = false
 offset_right = 100.0
 offset_bottom = 100.0
 color = Color(0.11764706, 1, 1, 0.49803922)
+[node name="selector" type="ColorRect" parent="." unique_id=1181800157]
+offset_right = 100.0
+offset_bottom = 100.0
+color = Color(1, 0, 0, 0.69411767)
 
 [connection signal="card_selected" from="manager" to="." method="_on_manager_card_selected"]
 [connection signal="pressed" from="details/executeCardButton" to="." method="_on_execute_card_button_pressed"]

@@ -80,6 +80,8 @@ func get_piece(pos: Vector2):
 		if piece.board_position == pos:
 			return piece
 
+func set_piece(pos: Vector2, piece) -> void:
+	piece.board_position = pos
 
 func get_pos_under_mouse():
 	var pos = get_global_mouse_position()
@@ -150,7 +152,7 @@ func beam_search_threat(own_color, cur_x, cur_y, inc_x, inc_y):
 	
 	# Keep moving in increment direction to find either a blocked pieces
 	# or out of board
-	while cur_x >= 0 and cur_x < 8 and cur_y >= 0 and cur_y < 8:
+	while cur_x >= 0 and cur_x < 5 and cur_y >= 0 and cur_y < 6:
 		var cur_pos = Vector2(cur_x, cur_y)
 		var cur_piece = get_piece(cur_pos)
 		if cur_piece != null:
@@ -163,3 +165,19 @@ func beam_search_threat(own_color, cur_x, cur_y, inc_x, inc_y):
 	
 	return threat_pos
 	
+var grid = []
+
+func electricute(x, y) -> void:
+	if (grid == []):
+		grid.resize(5)
+		for i in range(5):
+			grid[i] = []
+			grid[i].resize(6)
+	
+	grid[x][y] = true;
+	
+func getElectricute(x, y) -> bool:
+	return grid[x][y];
+	
+func deElectricute(x, y) -> void:
+	grid[x][y] = false;
