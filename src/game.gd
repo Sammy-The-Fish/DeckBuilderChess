@@ -26,6 +26,8 @@ var black_discard = []
 var turn_state = TURN_STATES.CARDS
 var selectedCard: CardStats = null
 var selectedPiece = []
+var selectedSquare
+
 
 
 # To drag piece
@@ -36,7 +38,7 @@ var previous_position = null;
 @onready var board = $board
 @onready var details = $details
 @onready var manager = $manager
-
+@onready var selector = $selector
 
 func _ready():
 	init_game()
@@ -78,11 +80,13 @@ func _input(event) :
 	
 func manageSelection():
 	match selectedCard.target_type:
-		Globals.TARGETS.PIECE:
+		Globals.TARGETS.FRIENDLY_PIECE:
 			var pos = board.get_pos_under_mouse()
 			if pos == null : return
 			var piece = board.get_piece(pos)
 			if piece == null: return
+			if piece.color != player_color:
+				return
 			if selectedPiece.size() == selectedCard.target_quantity:
 				var unselected = selectedPiece.pop_back()
 				unselected.modulate = Color("#FFFFFF")
@@ -94,6 +98,37 @@ func manageSelection():
 				selected.modulate = Color("#FF0000")
 				
 			details.setQuantitySelected(selectedPiece.size())
+		Globals.TARGETS.PIECE:
+			var pos = board.get_pos_under_mouse()
+			if pos == null : return
+			var piece = board.get_piece(pos)
+			if piece == null: return
+
+			
+			
+			if selectedPiece.size() == selectedCard.target_quantity:
+				var unselected = selectedPiece.pop_back()
+				unselected.modulate = Color("#FFFFFF")
+				selectedPiece.push_front(piece)
+			else:
+				selectedPiece.push_front(piece)
+			
+			for selected in selectedPiece:
+				selected.modulate = Color("#FF0000")
+				
+			details.setQuantitySelected(selectedPiece.size())
+		Globals.TARGETS.SQUARE:
+			print("we testin")
+			var pos = board.get_pos_under_mouse()
+			if pos == null : return
+			
+			selector.position = Vector2(
+				board.position.x + (pos.x * Globals.CELL_SIZE),
+				board.position.y + (pos.y * Globals.CELL_SIZE)
+			)
+			
+			selector.visible = true
+			details.button.disabled = false
 
 
 func init_turn():
@@ -245,12 +280,16 @@ func _on_execute_card_button_pressed() -> void:
 	
 	manager.remove_selected_node()
 	
+	
+	selector.visible = false
 	details.setDetails(null)
 	
 	
 
 
 func _on_proceed_button_pressed() -> void:
+	selector.visible = false
+	
 	selectedCard = null
 	for piece in selectedPiece:
 		piece.modulate =Color("#FFFFFF")
@@ -266,6 +305,9 @@ func _on_proceed_button_pressed() -> void:
 
 
 func _on_manager_card_selected(id: Cards.CARDS) -> void:
+	details.button.disabled = false
 	selectedCard = Cards.cardList[id]
+	selectedSquare = null
+	selector.visible=false
 	details.setDetails(null)
 	details.setDetails(selectedCard)

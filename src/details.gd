@@ -37,7 +37,7 @@ func setDetails(card: CardStats):
 		var indicator = selectionIndicator.instantiate()
 		selectionIndicators.append(indicator)
 		selectionContainer.add_child(indicator)
-
+	print(selectionIndicators.size())
 
 func setQuantitySelected(quantity: int):
 	for indicator in selectionIndicators:
@@ -57,6 +57,7 @@ func chessMode():
 func setDisabled():
 	for ind in selectionContainer.get_children():
 		ind.queue_free()
+	selectionIndicators = []
 	desc.text = "select a card"
 	button.disabled = true
 	procceedButton.disabled = false
