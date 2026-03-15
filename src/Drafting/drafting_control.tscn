@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dmfqidwx0ry3v"]
 
 [ext_resource type="Script" uid="uid://c4uc6b1umvl10" path="res://src/Drafting/drafting_control.gd" id="1_68mxr"]
+[ext_resource type="Texture2D" uid="uid://dc2ve8fb2se4r" path="res://cards/RedWall.png" id="2_lynsm"]
 
 [node name="DraftingControl" type="Control" unique_id=1578895908]
 layout_mode = 3
@@ -9,6 +10,16 @@ offset_right = 1960.0
 offset_bottom = 1080.0
 mouse_filter = 2
 script = ExtResource("1_68mxr")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=786106215]
+layout_mode = 0
+offset_left = -225.0
+offset_top = -221.0
+offset_right = 2288.0
+offset_bottom = 1222.0
+scale = Vector2(10, 10)
+texture = ExtResource("2_lynsm")
+stretch_mode = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1252565885]
 layout_mode = 1
@@ -44,6 +55,7 @@ alignment = 1
 
 [node name="Button" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=753333057]
 layout_mode = 2
+size_flags_horizontal = 10
 theme_override_font_sizes/font_size = 35
 text = "Add Selected Card to your deck"
 expand_icon = true
@@ -51,6 +63,7 @@ expand_icon = true
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1058683271]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
+size_flags_horizontal = 6
 theme_override_font_sizes/font_size = 35
 text = "Player 1's Turn to pick a card"
 autowrap_mode = 2
