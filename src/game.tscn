@@ -74,7 +74,7 @@ offset_top = 197.0
 offset_right = 607.0
 offset_bottom = 282.0
 theme_override_font_sizes/font_size = 56
-text = "PROCCEED TO CHESS"
+text = "PROCEED TO CHESS"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="details" unique_id=298058590]
 layout_direction = 2
